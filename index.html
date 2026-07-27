@@ -339,73 +339,37 @@
 
             document.getElementById('uploadBtnNav').addEventListener('click', () => openModal(uploadModalOverlay));
             document.getElementById('uploadBtnHero').addEventListener('click', () => openModal(uploadModalOverlay));
-            
-            // --- UPDATED FORM SUBMIT HANDLER ---
-            document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            document.getElementById('uploadForm').addEventListener('submit', (e) => {
                 e.preventDefault();
                 const name = document.getElementById('scriptName').value.trim();
                 const game = document.getElementById('scriptGame').value.trim();
                 const desc = document.getElementById('scriptDesc').value.trim();
                 const cat = document.getElementById('scriptCategory').value;
                 const code = document.getElementById('scriptCode').value.trim();
-
-                if (!name || !desc || !code || !game) {
-                    return showToast('❌ Please fill all fields (including game name)');
-                }
-
-                showToast('⏳ Uploading script to Google Drive...');
-
-                try {
-                    // Send upload payload to your backend server
-                    const res = await fetch('http://localhost:3000/api/upload-script', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            name,
-                            game,
-                            desc,
-                            category: cat,
-                            code,
-                            author: currentUser ? currentUser.username : 'Anonymous'
-                        })
-                    });
-
-                    const data = await res.json();
-
-                    if (data.success) {
-                        // Add script to website UI
-                        scripts.unshift({
-                            id: nextId++,
-                            name,
-                            game,
-                            desc,
-                            icon: '📜',
-                            iconClass: 'purple',
-                            tags: [cat],
-                            rating: 5.0,
-                            reviews: 1,
-                            uploaded: true,
-                            boostedUntil: 0,
-                            features: [],
-                            compatibility: ['All Executors'],
-                            version: '1.0.0',
-                            author: currentUser ? currentUser.username : 'Anonymous',
-                            loadstring: code
-                        });
-
-                        renderScripts();
-                        document.getElementById('uploadForm').reset();
-                        closeModal(uploadModalOverlay);
-                        showToast('✅ Uploaded to Google Drive & submitted for review!');
-                    } else {
-                        showToast('❌ Upload failed: ' + data.error);
-                    }
-                } catch (err) {
-                    console.error(err);
-                    showToast('❌ Backend server unreachable!');
-                }
+                if (!name || !desc || !code || !game) return showToast('❌ Please fill all fields (including game name)');
+                scripts.unshift({
+                    id: nextId++,
+                    name,
+                    game,
+                    desc,
+                    icon: '📜',
+                    iconClass: 'purple',
+                    tags: [cat],
+                    rating: 5.0,
+                    reviews: 1,
+                    uploaded: true,
+                    boostedUntil: 0,
+                    features: [],
+                    compatibility: ['All Executors'],
+                    version: '1.0.0',
+                    author: currentUser ? currentUser.username : 'Anonymous',
+                    loadstring: code
+                });
+                renderScripts();
+                document.getElementById('uploadForm').reset();
+                closeModal(uploadModalOverlay);
+                showToast('✅ Script submitted for moderator review!');
             });
-            // --- END OF UPDATED HANDLER ---
 
             function openBoostModal(id) {
                 const script = scripts.find(s => s.id === id);
