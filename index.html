@@ -55,10 +55,21 @@
         .nav-links { display:flex; align-items:center; gap:32px; list-style:none; }
         .nav-links a, .nav-links button { background:none; border:none; color:var(--text-secondary); font-weight:500; font-size:0.95rem; cursor:pointer; font-family:inherit; transition:color var(--transition); }
         .nav-links a:hover, .nav-links button:hover { color:#fff; }
-        .btn { display:inline-flex; align-items:center; gap:8px; padding:14px 28px; border-radius:50px; font-weight:600; font-size:1rem; cursor:pointer; border:none; transition:all var(--transition); font-family:inherit; }
+        .btn { display:inline-flex; align-items:center; gap:8px; padding:14px 28px; border-radius:50px; font-weight:600; font-size:1rem; cursor:pointer; border:none; transition:all var(--transition); font-family:inherit; text-decoration:none; }
         .btn-primary { background:var(--gradient-1); color:#fff; box-shadow:0 0 30px var(--accent-glow); }
         .btn-boost { background:var(--gradient-3); color:#fff; font-weight:700; }
         .btn-sm { padding:8px 18px; font-size:0.85rem; }
+        /* new outline style for external link */
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent-light);
+        }
+        .btn-outline:hover {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
         .hero { padding:160px 0 100px; text-align:center; }
         .hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); color:var(--orange); padding:8px 18px; border-radius:50px; font-size:0.85rem; font-weight:600; margin-bottom:28px; }
         .hero-badge .dot { width:8px; height:8px; background:var(--green); border-radius:50%; animation:blink 1.5s infinite; }
@@ -117,6 +128,8 @@
             <div class="hero-buttons">
                 <button class="btn btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">🔍 Browse Scripts</button>
                 <button class="btn btn-boost" id="uploadBtnHero">🚀 Upload & Boost</button>
+                <!-- New button that links to the Netlify site -->
+                <a href="https://xenscripts.netlify.app/" target="_blank" rel="noopener" class="btn btn-outline">🌐 Official XenScripts</a>
             </div>
             <div style="display:flex;justify-content:center;gap:48px;margin-top:60px;padding-top:32px;border-top:1px solid var(--border);flex-wrap:wrap;">
                 <div><div style="font-size:2.2rem;font-weight:900;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">1,200+</div><div style="color:var(--text-muted);">Free Scripts</div></div>
