@@ -149,10 +149,10 @@
     </form></div></div>
 
     <!-- Boost Payment Modal -->
-    <div class="modal-overlay" id="boostModalOverlay"><div class="modal"><button class="close-modal" id="closeBoostModal">✕</button><h2>🚀 Boost Script (24h)</h2><p>Pin <strong id="boostScriptName"></strong> to the front page for <span style="color:var(--boost-gold);">$5.00</span></p><div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="modal-overlay" id="boostModalOverlay"><div class="modal"><button class="close-modal" id="closeBoostModal">✕</button><h2>🚀 Boost Script (24h)</h2><p>Pin <strong id="boostScriptName"></strong> to the front page for <span style="color:var(--boost-gold);">$0.20</span></p><div style="display:flex;flex-direction:column;gap:12px;">
         <input placeholder="Card Number" id="cardNumber" style="padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;">
         <div style="display:flex;gap:12px;"><input placeholder="MM/YY" id="cardExpiry" style="flex:1;padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;"><input placeholder="CVC" id="cardCvc" style="flex:1;padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:#fff;"></div>
-        <button id="payBoostBtn" class="btn btn-boost" style="width:100%">💳 Pay $5 & Boost</button>
+        <button id="payBoostBtn" class="btn btn-boost" style="width:100%">💳 Pay $0.20 & Boost</button>
         <p style="font-size:0.7rem;color:var(--text-muted);margin-top:8px;">Only valid cards accepted. Boost lasts 24 hours from purchase.</p>
     </div></div></div>
 
@@ -249,10 +249,10 @@
 
             // Updated BBN features
             const initialScripts = [
-                { id:1, name:'BBN Script', desc:'Ultimate script for Bite by Night with ESP, noclip, auto parry, and more.', icon:'🍬', iconClass:'green', tags:['AutoFarm','ESP'], game:'Bite by Night', rating:4.9, reviews:1543, uploaded:false, boostedUntil:0, features:['ESP Generators', 'Noclip', 'Inf Stamina', 'Auto Parry', 'Hitbox Expander', 'Auto Escape', 'No Blindness', 'Auto Barricade', 'Change Walk/Run Speed'], compatibility:['All Executors'], version:'1.2.1', author:'Glitch', loadstring:'loadstring(game:HttpGet("https://raw.githubusercontent.com/FortheLolzahaha-alt/BitebyNight/refs/heads/main/Script"))()' },
-                { id:2, name:'Arsenal Script', desc:'Aimbot and ESP for Arsenal. Silent aim, triggerbot.', icon:'🔫', iconClass:'purple', tags:['Aimbot','ESP'], game:'Arsenal', rating:4.8, reviews:2103, uploaded:false, boostedUntil:0, features:['Silent aimbot','Triggerbot','Player ESP','Weapon mods','Configurable FOV'], compatibility:['All Executors'], version:'2.0.0', author:'Glitch', loadstring:'loadstring(game:httpget("https://raw.githubusercontent.com/FortheLolzahaha-alt/ArsenalbyGlitch/refs/heads/main/SpinBot"))()' },
-                { id:3, name:'Forsaken Auto Block', desc:'Perfect auto block and parry for Forsaken.', icon:'🛡️', iconClass:'blue', tags:['AutoBlock','Combat'], game:'Forsaken', rating:4.7, reviews:892, uploaded:false, boostedUntil:0, features:['Auto block/parry','Customizable timing','Works on all weapons','Low detection risk'], compatibility:['All Executors'], version:'1.0.4', author:'Glitch', loadstring:'loadstring(game:httpget("https://raw.githubusercontent.com/FortheLolzahaha-alt/ForsakenScript/refs/heads/main/By%20Glitch%20%26%20NoHyped"))()' },
-                { id:4, name:'Notoriety Script', desc:'Stealth and heist helper for Notoriety. Auto drill, auto picklock.', icon:'💎', iconClass:'orange', tags:['Heist','Stealth'], game:'Notoriety', rating:4.6, reviews:670, uploaded:false, boostedUntil:0, features:['Auto drill','Auto picklock','Enemy alert system','Loot collector','Stealth mode'], compatibility:['All Executors'], version:'1.0.0', author:'Glitch', loadstring:'loadstring(game:HttpGet("https://pastebin.com/raw/g84r9QVy"))()' }
+                { id:1, name:'BBN Script', desc:'Ultimate script for Bite by Night with ESP, noclip, auto parry, and more.', icon:' ', iconClass:'green', tags:['AutoFarm','ESP'], game:'Bite by Night', rating:4.9, reviews:1543, uploaded:false, boostedUntil:0, features:['ESP Generators', 'Noclip', 'Inf Stamina', 'Auto Parry', 'Hitbox Expander', 'Auto Escape', 'No Blindness', 'Auto Barricade', 'Change Walk/Run Speed'], compatibility:['All Executors'], version:'1.2.1', author:'Glitch', loadstring:'loadstring(game:HttpGet("https://raw.githubusercontent.com/FortheLolzahaha-alt/BitebyNight/refs/heads/main/Script"))()' },
+                { id:2, name:'Arsenal Script', desc:'Aimbot and ESP for Arsenal. Silent aim, triggerbot.', icon:' ', iconClass:'purple', tags:['Aimbot','ESP'], game:'Arsenal', rating:4.8, reviews:2103, uploaded:false, boostedUntil:0, features:['Silent aimbot','Triggerbot','Player ESP','Weapon mods','Configurable FOV'], compatibility:['All Executors'], version:'2.0.0', author:'Glitch', loadstring:'loadstring(game:httpget("https://raw.githubusercontent.com/FortheLolzahaha-alt/ArsenalbyGlitch/refs/heads/main/SpinBot"))()' },
+                { id:3, name:'Forsaken Auto Block', desc:'Perfect auto block and parry for Forsaken.', icon:' ', iconClass:'blue', tags:['AutoBlock','Combat'], game:'Forsaken', rating:4.7, reviews:892, uploaded:false, boostedUntil:0, features:['Auto block/parry','Customizable timing','Works on all weapons','Low detection risk'], compatibility:['All Executors'], version:'1.0.4', author:'Glitch', loadstring:'loadstring(game:httpget("https://raw.githubusercontent.com/FortheLolzahaha-alt/ForsakenScript/refs/heads/main/By%20Glitch%20%26%20NoHyped"))()' },
+                { id:4, name:'Notoriety Script', desc:'Stealth and heist helper for Notoriety. Auto drill, auto picklock.', icon:' ', iconClass:'orange', tags:['Heist','Stealth'], game:'Notoriety', rating:4.6, reviews:670, uploaded:false, boostedUntil:0, features:['Auto drill','Auto picklock','Enemy alert system','Loot collector','Stealth mode'], compatibility:['All Executors'], version:'1.0.0', author:'Glitch', loadstring:'loadstring(game:HttpGet("https://pastebin.com/raw/g84r9QVy"))()' }
             ];
             let scripts = [...initialScripts];
             let nextId = 5;
@@ -368,7 +368,7 @@
                 renderScripts();
                 document.getElementById('uploadForm').reset();
                 closeModal(uploadModalOverlay);
-                showToast('✅ Script submitted for moderator review!');
+                showToast('✅ Script submitted');
             });
 
             function openBoostModal(id) {
@@ -397,7 +397,7 @@
                     renderScripts();
                     showToast('🚀 Script boosted for 24 hours!');
                 } else {
-                    showToast('⚠️ Payment processed, but webhook failed');
+                    showToast('⚠️ Payment couldnt be processed');
                     script.boostedUntil = Date.now() + 24 * 60 * 60 * 1000;
                 }
                 closeModal(boostModalOverlay);
